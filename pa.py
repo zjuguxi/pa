@@ -14,13 +14,9 @@ cwd = os.getcwd()
 
 # 打开 Excel 文档，读取链接
 xls = pd.ExcelFile('1.xls')
-pickup = pd.read_excel(xls, 'Pickup', header = [44], index_col = None, na_value = None)
-
-df = pickup.DataFrame(column = list('ABCDEFG'))
+df = pd.read_excel(xls, 'Pickup', header = [44], index_col = [1], na_value = None)
 
 # 每个链接生成字典，包含『Headline』和『View Release on』两项，然后加入列表 links[]
-
-
 
 print(df)
 
