@@ -14,11 +14,15 @@ cwd = os.getcwd()
 
 # 打开 Excel 文档，读取链接
 xls = pd.ExcelFile('1.xls')
-df = pd.read_excel(xls, 'Pickup', header = [44], index_col = [1], na_value = None)
+df = pd.read_excel(xls, 'Pickup', header = [44], index_col = [0], na_value = None)
+
+url_prefix = 'http://'
+
+for i in df:
+    if url_prefix in i:
+        print(i)
 
 # 每个链接生成字典，包含『Headline』和『View Release on』两项，然后加入列表 links[]
-
-print(df)
 
 # 循环爬取链接并保存本地
 '''
