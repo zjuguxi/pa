@@ -1,7 +1,5 @@
 import os
-import urllib.request
 import pandas as pd
-import numpy as np
 import xlsxwriter
 
 # 得到当前path
