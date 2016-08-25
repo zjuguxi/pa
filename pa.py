@@ -9,22 +9,24 @@ cwd = os.getcwd()
 # 打开 Excel 文档的 Pickup 汇总表，读取链接
 xls = pd.ExcelFile('1.xls')
 
-df = pd.read_excel(xls, 'Pickup', header = 43, index_col = None, na_value = None)
+# df = pd.read_excel(xls, 'Pickup', header = 43, index_col = None, na_value = None)
 
-'''
 df_pickup = pd.read_excel(xls, 'Pickup', header = None, index_col = None, na_value = None)
 
 # Pickup 的总 row 数
 p = len(df_pickup.index.values.tolist())
-m = 0
-for i in range(p):
-    if df_pickup.index[i] == 'Story Number':
-        m = df_pickup.index[i].values
-    break
-    print('m = ',m)
 
+# 找到 Pickup column[0] 里 Story Number 第一次出现的位置，取其 index，命名为 m
+# 从 Story Number 处开始截取 DataFrame
+s = df_pickup.iloc[:, 0]
+m = s[s == 'Story Number'].index[0]
 df = pd.read_excel(xls, 'Pickup', header = m, index_col = None, na_value = None)
-'''
+
+# 找到 Twitter 的 index，命名为 twt
+# 从 Twitter Handle 处开始截取 DataFrame
+twt = s[s == 'Twitter Handle'].index[0]
+df_twitter = pd.read_excel(xls, 'Pickup', header = twt, index_col = None, na_value = None)
+
 # 打开 Realeases 读取文章标题
 df_headline = pd.read_excel(xls, 'Releases', header = None, index_col = 0, na_value = None)
 
