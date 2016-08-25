@@ -11,22 +11,40 @@ xls = pd.ExcelFile('1.xls')
 df = pd.read_excel(xls, 'Pickup', header = [43], index_col = None, na_value = None)
 
 # 打开 Realeases 读取文章标题
-df_headline = pd.read_excel(xls, 'Releases', header = [3], index_col = 0, na_value = None)
+df_headline = pd.read_excel(xls, 'Releases', header = None, index_col = 0, na_value = None)
 
-# 把 Releases 的 columns 改成 A/B
-df_headline.columns = ['A', 'B']
+# Releases 的总 row 数
+n = len(df_headline.index.values.tolist())
+# Pickup 的总 row 数
+p = len(df.index.values.tolist())
 
-# Releases 的总行数
-n = df_headline.index.values.tolist()[-1]
+# 提取 Releases 里对应的 Story Number和 Headline
 series_headline = []
 series_storynumber = []
-for i in n:
-    if df_headline.ix[:, 'A'] == 'Headline':
-        series_headline.append(df_headline.ix[:, 'B'])
-    if df_headline.ix[:, 'A'] == 'Story Number':
-        series_storynumber.append(df_headline.ix[:, 'B'])
 
-df_releases = DataFrame(series_headline, index = series_storynumber)
+for i in range(n):
+    if df_headline.index[i] == 'Headline':
+        series_headline.append(df_headline.ix[i, 1])
+    if df_headline.index[i] == 'Story Number':
+        series_storynumber.append(df_headline.ix[i, 1])
+
+df_releases = pd.DataFrame(series_headline, index = series_storynumber) # 将2个series合并为一个dataframe
+
+print(df_releases)
+
+series_addon = []
+
+for i in range(p):
+    if df_releases.index[i] == df.ix[i:, 'Story Number']:
+        series_addon.append(df_releases.ix[i, 0])
+
+df['j'] = series_addon
+
+
+
+
+
+
 
 '''
 
@@ -46,13 +64,13 @@ print(df_new_1)
 
 # print(df_headline.iloc['Headline', 1])
 
-'''
+
 url_prefix = 'http://'
 
 for i in df:
     if url_prefix in i:
         print(i)
-'''
+
 # 打印所有行的第4列（从0开始计数）
 # print(df.iloc[:, 4])
 
