@@ -26,6 +26,10 @@ df = pd.read_excel(xls, 'Pickup', header = m, index_col = None, na_value = None)
 # 从 Twitter Handle 处开始截取 DataFrame
 twt = s[s == 'Twitter Handle'].index[0]
 df_twitter = pd.read_excel(xls, 'Pickup', header = twt, index_col = None, na_value = None)
+# 把 Twitter 信息生成新表格
+writer = pd.ExcelWriter('3_twitter.xlsx', engine='xlsxwriter')
+df_twitter.to_excel(writer, sheet_name='Sheet1')
+writer.save()
 
 # 打开 Realeases 读取文章标题
 df_headline = pd.read_excel(xls, 'Releases', header = None, index_col = 0, na_value = None)
