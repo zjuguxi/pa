@@ -18,7 +18,7 @@ n = len(df_headline.index.values.tolist())
 # Pickup 的总 row 数
 p = len(df.index.values.tolist())
 
-# 提取 Releases 里对应的 Story Number和 Headline
+# 提取 Releases 里对应的 Story Number和 Headline，形成 Series
 series_headline = []
 series_storynumber = []
 
@@ -30,16 +30,20 @@ for i in range(n):
 
 df_releases = pd.DataFrame(series_headline, index = series_storynumber) # 将2个series合并为一个dataframe
 
+# Releases 的总 row 数
+q = len(df_releases.index.values.tolist()) - 1
+
 print(df_releases)
 
-series_addon = []
+
+list_addon = []
 
 for i in range(p):
-    for j in range(n):
-        if df_releases.index[j] == df.ix[i, 'Story Number']:
-            series_addon.append(df_releases.ix[j, 0])
+    for j in range(q):
+        if df_releases.index[q] == df.ix[i, 'Story Number']:
+            list_addon.append(df_releases.ix[q, 0])
 
-df['j'] = series_addon
+df['j'] = pd.Series(data = list_addon)
 
 writer = pd.ExcelWriter('3.xlsx', engine='xlsxwriter')
 df.to_excel(writer, sheet_name='Sheet1')
@@ -47,7 +51,10 @@ writer.save()
 
 
 
+
+
 '''
+
 
 df_releases_column = ['Headline', 'Language', 'Realease Clear Time', 'Story Number', 'View Release on '] 
 
