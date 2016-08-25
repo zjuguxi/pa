@@ -35,14 +35,15 @@ print(df_releases)
 series_addon = []
 
 for i in range(p):
-    if df_releases.index[i] == df.ix[i:, 'Story Number']:
-        series_addon.append(df_releases.ix[i, 0])
+    for j in range(n):
+        if df_releases.index[j] == df.ix[i, 'Story Number']:
+            series_addon.append(df_releases.ix[j, 0])
 
 df['j'] = series_addon
 
-
-
-
+writer = pd.ExcelWriter('3.xlsx', engine='xlsxwriter')
+df.to_excel(writer, sheet_name='Sheet1')
+writer.save()
 
 
 
