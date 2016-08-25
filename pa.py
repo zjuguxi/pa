@@ -1,4 +1,5 @@
 import os
+import numpy as np
 import pandas as pd
 import xlsxwriter
 
@@ -7,11 +8,32 @@ cwd = os.getcwd()
 
 # 打开 Excel 文档的 Pickup 汇总表，读取链接
 xls = pd.ExcelFile('1.xls')
-df = pd.read_excel(xls, 'Pickup', header = [44], index_col = None, na_value = None)
+df = pd.read_excel(xls, 'Pickup', header = [43], index_col = None, na_value = None)
 
 # 打开 Realeases 读取文章标题
-
 df_headline = pd.read_excel(xls, 'Releases', header = None, index_col = 0, na_value = None)
+
+# 把 Releases 的 columns 改成 A/B
+df_headline.columns = ['A', 'B']
+
+# Releases 的总行数
+n = df_headline.index.values.tolist()[-1]
+series_headline = []
+series_storynumber = []
+for i in n:
+    if df_headline.ix[:, 'A'] == 'Headline':
+        series_headline.append(df_headline.ix[:, 'B'])
+    if df_headline.ix[:, 'A'] == 'Story Number':
+        series_storynumber.append(df_headline.ix[:, 'B'])
+
+df_releases = DataFrame(series_headline, index = series_storynumber)
+
+'''
+
+df_releases_column = ['Headline', 'Language', 'Realease Clear Time', 'Story Number', 'View Release on '] 
+
+
+
 s_language_releases = df_headline.loc['Language', :]
 s_topic_releases = df_headline.loc['Headline', :]
 
@@ -60,7 +82,7 @@ df_new_1.to_excel(writer, sheet_name='Sheet1')
 writer.save()
 
 
-'''
+
 for i in list:
 
     request = urllib.request.Request('http://www.baidu.com')
@@ -69,5 +91,3 @@ for i in list:
     f = open('./temp/{}', 'wb+').format(i)
     f.write(response.read())
 '''
-
-# 循环截图
