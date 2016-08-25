@@ -8,7 +8,11 @@ cwd = os.getcwd()
 
 # 打开 Excel 文档的 Pickup 汇总表，读取链接
 xls = pd.ExcelFile('1.xls')
-df = pd.read_excel(xls, 'Pickup', header = [43], index_col = None, na_value = None)
+
+
+df_pickup = pd.read_excel(xls, 'Pickup', header = None, index_col = None, na_value = None)
+
+for i in 
 
 # 打开 Realeases 读取文章标题
 df_headline = pd.read_excel(xls, 'Releases', header = None, index_col = 0, na_value = None)
@@ -30,8 +34,8 @@ for i in range(n):
 
 df_releases = pd.DataFrame(series_headline, index = series_storynumber) # 将2个series合并为一个dataframe
 
-# Releases 的总 row 数
-q = len(df_releases.index.values.tolist()) - 1
+# Releases新表格 的总 row 数
+q = len(df_releases.index.values.tolist())
 
 print(df_releases)
 
@@ -40,10 +44,8 @@ list_addon = []
 
 for i in range(p):
     for j in range(q):
-        if df_releases.index[q] == df.ix[i, 'Story Number']:
-            list_addon.append(df_releases.ix[q, 0])
-
-df['j'] = pd.Series(data = list_addon)
+        if df.ix[i, 'Story Number'] == df_releases.index[j]: # 对比新 Releases 和 Pickup 的Story Number
+            df.ix[i, 'Headline'] = df_releases.ix[j, 0]
 
 writer = pd.ExcelWriter('3.xlsx', engine='xlsxwriter')
 df.to_excel(writer, sheet_name='Sheet1')
