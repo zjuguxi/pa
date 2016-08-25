@@ -11,7 +11,7 @@ xls = pd.ExcelFile('1.xls')
 df = pd.read_excel(xls, 'Pickup', header = [43], index_col = None, na_value = None)
 
 # 打开 Realeases 读取文章标题
-df_headline = pd.read_excel(xls, 'Releases', header = None, index_col = 0, na_value = None)
+df_headline = pd.read_excel(xls, 'Releases', header = [3], index_col = 0, na_value = None)
 
 # 把 Releases 的 columns 改成 A/B
 df_headline.columns = ['A', 'B']
