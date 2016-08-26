@@ -9,10 +9,10 @@ link = []
 
 def download_web(x):
     ff = open('%s.html', ) % x
-    ff.writelines(text)
+    ff.writelines(x.text)
     ff.close()
 
 for i in link:
     r = requests.get(i)
-    download_web(r.text)
+    download_web(r)
 
