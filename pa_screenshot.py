@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-import sys, os, requests
+import sys, os, requests, time
 import pandas as pd
 import webbrowser as wb
 import pyscreenshot
@@ -14,18 +14,13 @@ df = pd.read_excel(xls, header = None, index_col = None, na_value = None)
 
 rows_df = len(df.index.values.tolist())
 
+
 for i in range(rows_df):
-    wb.open(df.ix[i + 1, 5])
-    r = requests.head(df.ix[i, 5])
-    if r.status_code == 200
-        pyscreenshot.grab_to_file(/screenshot/%s.png) % i + 1
+    i_1 = i + 1
+    wb.open(df.ix[i_1, 5],new = 0)
+    time.sleep(10)
+    r = requests.head(df.ix[i_1, 5])
+    if r.status_code == 200:
+        pyscreenshot.grab_to_file('{}.png'.format(i_1))
     else:
-        break
-
-
-
-
-
-
-
-
+        continue
