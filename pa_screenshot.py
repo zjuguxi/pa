@@ -3,6 +3,7 @@ import sys, os, requests, time
 import pandas as pd
 import webbrowser as wb
 import pyscreenshot
+from PIL import Image
 
 # 获取当前路径
 cwd = os.getcwd()
@@ -21,6 +22,10 @@ for i in range(rows_df):
     time.sleep(10)
     r = requests.head(df.ix[i_1, 5])
     if r.status_code == 200:
-        pyscreenshot.grab_to_file('{}.png'.format(i_1))
+        img = pyscreenshot.grab()
     else:
         continue
+    img2 = img.crop((0,240,2540,1440))
+    img2.save('{}.png'.format(i_1))
+
+
