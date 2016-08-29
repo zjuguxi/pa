@@ -64,8 +64,6 @@ for i in range(p):
         if df.ix[i, 'Story Number'] == df_releases.index[j]: # 对比新 Releases 和 Pickup 的Story Number
             df.ix[i, 'Headline'] = df_releases.ix[j, 0]
 
-df.columns = df.ix[0,:]
-
 writer = pd.ExcelWriter('3.xlsx', engine='xlsxwriter')
 df.to_excel(writer, sheet_name='Sheet1')
 writer.save()
