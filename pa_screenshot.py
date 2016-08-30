@@ -16,10 +16,11 @@ xls = pd.ExcelFile('3.xlsx')
 df = pd.read_excel(xls, header = None, index_col = None, na_value = None)
 
 rows_df = len(df.index.values.tolist())
-
-# 创建 Word 文档
+bad_list = []
+# 创建 Word 和 PPT 文档
 document = Document()
 document.add_heading('Document Title', 0)
+prs = Presentation()
 
 for i in range(rows_df):
     i_1 = i + 1
@@ -29,6 +30,7 @@ for i in range(rows_df):
     if r.status_code == 200:
         img = pyscreenshot.grab()
     else:
+        bad_list.append(i_1)
         continue
     img2 = img.crop((0,240,2540,1440))
     img2.save('{}.png'.format(i_1))
@@ -39,9 +41,10 @@ for i in range(rows_df):
     document.add_picture('{}.png'.format(i_1))
     document.save('report.docx')
 
+    # 生成 PPT
+    prs.save('report.pptx')
 
-# 生成 PPT
-
+print('These pages are Inaccessible: ', bad_list)
 print('''I have fought the good fight,
          I have finished the race, 
          I have kept the faith.
