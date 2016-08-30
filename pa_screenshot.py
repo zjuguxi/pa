@@ -27,5 +27,3 @@ for i in range(rows_df):
         continue
     img2 = img.crop((0,240,2540,1440))
     img2.save('{}.png'.format(i_1))
-
-
