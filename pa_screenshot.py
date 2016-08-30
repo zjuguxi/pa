@@ -33,9 +33,9 @@ for i in range(rows_df):
     img2 = img.crop((0,240,2540,1440))
     img2.save('{}.png'.format(i_1))
 
-    # 生成 Word
+    # 写入 Word 文档
     headline = df.ix[i_1, 3]
-    p = document.add_heading('{}'.format(headline), Level = 1)
+    p = document.add_heading('{}'.format(headline), level = 1)
     document.add_picture('{}.png'.format(i_1))
     document.save('report.docx')
 
