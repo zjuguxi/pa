@@ -1,5 +1,5 @@
+# -*- coding:utf-8 -*-
 import os
-import numpy as np
 import pandas as pd
 import xlsxwriter
 
@@ -8,9 +8,6 @@ cwd = os.getcwd()
 
 # 打开 Excel 文档的 Pickup 汇总表，读取链接
 xls = pd.ExcelFile('1.xls')
-
-# df = pd.read_excel(xls, 'Pickup', header = 43, index_col = None, na_value = None)
-
 df_pickup = pd.read_excel(xls, 'Pickup', header = None, index_col = None, na_value = None)
 
 # Pickup 的总 row 数
@@ -55,7 +52,6 @@ df_releases = pd.DataFrame(series_headline, index = series_storynumber) # 将2�
 q = len(df_releases.index.values.tolist())
 
 print(df_releases)
-
 
 list_addon = []
 

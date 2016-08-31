@@ -1,13 +1,18 @@
 # -*- coding:utf-8 -*-
-import sys, os, requests, time
+import os, requests, time
 import pandas as pd
 import webbrowser as wb
 import pyscreenshot
-from PIL import Image
+from PIL import Image, ImageOps
 from docx import Document
 from docx.shared import Inches
 from pptx import Presentation
-from pptx.util import Inches
+from pptx.util import Inches, Pt
+from selenium.webdriver import Firefox
+
+driver = Firefox()
+driver.set_window_position(0, 0)
+driver.set_window_size(1024, 768)
 
 # 获取当前路径
 cwd = os.getcwd()
@@ -24,7 +29,7 @@ document = Document()
 document.add_heading('Document Title', 0)
 
 prs = Presentation()
-blank_slide_layout = prs.slide_layouts[10]
+blank_slide_layout = prs.slide_layouts[0]
 slide = prs.slides.add_slide(blank_slide_layout)
 
 for i in range(rows_df):
@@ -38,7 +43,8 @@ for i in range(rows_df):
         bad_list.append(i_1)
         continue
     img2 = img.crop((0,240,2540,1440))
-    img2.save('{}.png'.format(i_1))
+    img3 = ImageOps.expand(img2, border = 10, fill = 'black') # 加黑框
+    img3.save('{}.png'.format(i_1))
 
     # 写入 Word 文档
     headline = df.ix[i_1, 3]
@@ -48,19 +54,29 @@ for i in range(rows_df):
 
     # 生成 PPT
     shapes = slide.shapes
-    #body_shape = shapes.placeholders[6]
-    #tf = body_shape.text_frame
-    #tf.text = '海外重量级网站传播情况: {}'.format(df.ix[i_1, 3])
-    top = Inches(1)
+
+    # 增加 PPT 每页标题
+    left = top = width = height = Inches(1)
+    txBox = slide.shapes.add_textbox(left, top, width, height)
+    tf = txBox.text_frame
+    p = tf.add_paragraph()
+    p.text = '海外重量级网站传播情况: {}'.format(df.ix[i_1, 3])
+    p.font.bold = True
+    p.font.size = Pt(30)
+
+
+    # 插入截图
+    top = Inches(2.5)
     left = Inches(1)
-    height = Inches(5.5)
+    height = Inches(4)
     pic = slide.shapes.add_picture('{}.png'.format(i_1), left, top, height=height)
     prs.save('report.pptx')
+    slide = prs.slides.add_slide(blank_slide_layout)
 
-if bad_list not None:
+if not bad_list:
     print('These links are inaccessible: ', bad_list, '. Please check them again.')
 else:
-    break
+    pass
 
 print('''I have fought the good fight,
          I have finished the race, 
