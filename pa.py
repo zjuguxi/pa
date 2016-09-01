@@ -24,7 +24,7 @@ df = pd.read_excel(xls, 'Pickup', header = m, index_col = None, na_value = None)
 twt = s[s == 'Twitter Handle'].index[0]
 df_twitter = pd.read_excel(xls, 'Pickup', header = twt, index_col = None, na_value = None)
 # 把 Twitter 信息生成新表格
-writer = pd.ExcelWriter('3_twitter.xlsx', engine='xlsxwriter')
+writer = pd.ExcelWriter('twitter.xlsx', engine='xlsxwriter')
 df_twitter.to_excel(writer, sheet_name='Sheet1')
 writer.save()
 
@@ -60,6 +60,8 @@ for i in range(p):
         if df.ix[i, 'Story Number'] == df_releases.index[j]: # 对比新 Releases 和 Pickup 的Story Number
             df.ix[i, 'Headline'] = df_releases.ix[j, 0]
 
-writer = pd.ExcelWriter('3.xlsx', engine='xlsxwriter')
+df = df[df.Headline.notnull()] # 去掉 Headline 为空的 rows，仅剩普通Links
+
+writer = pd.ExcelWriter('links.xlsx', engine='xlsxwriter', options={'strings_to_urls': False})
 df.to_excel(writer, sheet_name='Sheet1')
 writer.save()
