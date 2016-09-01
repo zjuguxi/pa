@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-import os, requests, time
+import sys, requests, time
 import pandas as pd
 import webbrowser as wb
 import pyscreenshot
@@ -8,14 +8,12 @@ from docx import Document
 from docx.shared import Inches
 from pptx import Presentation
 from pptx.util import Inches, Pt
-from selenium.webdriver import Firefox
+import selenium
+from selenium import  webdriver
+import validators
 
-driver = Firefox()
-driver.set_window_position(0, 0)
-driver.set_window_size(1024, 768)
-
-# 获取当前路径
-cwd = os.getcwd()
+# driver = webdriver.Chrome()
+# driver.set_window_size(2000, 1440)
 
 # 自动截图并裁剪
 
@@ -32,6 +30,8 @@ prs = Presentation()
 blank_slide_layout = prs.slide_layouts[0]
 slide = prs.slides.add_slide(blank_slide_layout)
 
+
+
 for i in range(rows_df):
     i_1 = i + 1
     wb.open(df.ix[i_1, 5],new = 0)
@@ -42,7 +42,7 @@ for i in range(rows_df):
     else:
         bad_list.append(i_1)
         continue
-    img2 = img.crop((0,240,2540,1440))
+    img2 = img.crop((0,240,2000,1440))
     img3 = ImageOps.expand(img2, border = 10, fill = 'black') # 加黑框
     img3.save('{}.png'.format(i_1))
 
@@ -67,23 +67,26 @@ for i in range(rows_df):
 
     # 插入截图
     top = Inches(2.5)
-    left = Inches(1)
+    left = Inches(1.5)
     height = Inches(4)
     pic = slide.shapes.add_picture('{}.png'.format(i_1), left, top, height=height)
     prs.save('report.pptx')
     slide = prs.slides.add_slide(blank_slide_layout)
 
+
+
+
 if not bad_list:
-    print('These links are inaccessible: ', bad_list, '. Please check them again.')
+    print('''These links are inaccessible: ''', bad_list, ''' Please check them again.
+     ----------THE END----------''')
 else:
     pass
 
 print('''I have fought the good fight,
-         I have finished the race, 
-         I have kept the faith.
-         
+I have finished the race, 
+I have kept the faith.
          - 2 Timothy 4:7
 
 
-         Have a good day.
-         : -) ''')
+Have a good day.
+: ) ''')
