@@ -1,0 +1,10 @@
+# 执行这行命令 pip install -r requirements.txt
+
+pandas
+xlsxwriter
+requests
+selenium
+pyscreenshot
+python-docx
+python-pptx
+validators
