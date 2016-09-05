@@ -77,13 +77,19 @@ writer = pd.ExcelWriter('links.xlsx', engine='xlsxwriter', options={'strings_to_
 df.to_excel(writer, sheet_name='Sheet1')
 writer.save()
 
-#####以上为数据处理#####
+##### 以上为数据处理 #####
 
+
+##### 以上为写入 DOC 和 PPT #####
 
 xls = pd.ExcelFile('links.xlsx')
 df = pd.read_excel(xls, header = None, index_col = None, na_value = None)
 
+xls_twitter = pd.ExcelFile('twitter.xlsx')
+df_twitter = pd.read_excel(xls_twitter, header = None, index_col = None, na_value = None)
+
 rows_df = len(df.index.values.tolist())
+rows_df_twitter = len(df_twitter.index.values.tolist())
 bad_list = []
 # 创建 Word 和 PPT 文档
 document = Document()
@@ -92,7 +98,6 @@ document.add_heading('Document Title', 0)
 prs = Presentation()
 blank_slide_layout = prs.slide_layouts[0]
 slide = prs.slides.add_slide(blank_slide_layout)
-
 
 
 for i in range(1, rows_df):
@@ -107,8 +112,6 @@ for i in range(1, rows_df):
     img2 = img.crop((0,240,2000,1440))
     img3 = ImageOps.expand(img2, border = 10, fill = 'black') # 加黑框
     img3.save('{}.png'.format(i))
-
-    # driver.close()
 
     # 写入 Word 文档
     headline = df.ix[i, 3]
@@ -125,6 +128,46 @@ for i in range(1, rows_df):
     tf = txBox.text_frame
     p = tf.add_paragraph()
     p.text = '海外重量级网站传播情况: {}'.format(df.ix[i, 3])
+    p.font.bold = True
+    p.font.size = Pt(30)
+
+
+    # 插入截图
+    top = Inches(2.5)
+    left = Inches(1.5)
+    height = Inches(4)
+    pic = slide.shapes.add_picture('{}.png'.format(i), left, top, height=height)
+    prs.save('report.pptx')
+    slide = prs.slides.add_slide(blank_slide_layout)
+
+for i in range(1, rows_df_twitter):
+    wb.open(df_twitter.ix[i, 2],new = 0)
+    time.sleep(10)
+    r = requests.head(df_twitter.ix[i, 2])
+    if r.status_code == 200:
+        img = pyscreenshot.grab()
+    else:
+        bad_list.append(i)
+        continue
+    img2 = img.crop((0,240,2000,1440))
+    img3 = ImageOps.expand(img2, border = 10, fill = 'black') # 加黑框
+    img3.save('{}.png'.format(i))
+
+    # 写入 Word 文档
+    headline = Twitter 账号: df_twitter.ix[i, 1]
+    p = document.add_heading('{}'.format(headline), level = 1)
+    document.add_picture('{}.png'.format(i))
+    document.save('report.docx')
+
+    # 生成 PPT
+    shapes = slide.shapes
+
+    # 增加 PPT 每页标题
+    left = top = width = height = Inches(1)
+    txBox = slide.shapes.add_textbox(left, top, width, height)
+    tf = txBox.text_frame
+    p = tf.add_paragraph()
+    p.text = 'Twitter 账号: {}'.format(df_twitter.ix[i, 1])
     p.font.bold = True
     p.font.size = Pt(30)
 
