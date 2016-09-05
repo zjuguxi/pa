@@ -101,6 +101,10 @@ slide = prs.slides.add_slide(blank_slide_layout)
 
 
 for i in range(1, rows_df):
+    print('''=========
+        Working on this Now...............
+            {}
+            ========='''.format(df[df.index == i]))
     wb.open(df.ix[i, 5],new = 0)
     time.sleep(10)
     r = requests.head(df.ix[i, 5])
@@ -141,6 +145,10 @@ for i in range(1, rows_df):
     slide = prs.slides.add_slide(blank_slide_layout)
 
 for i in range(1, rows_df_twitter):
+    print('''=========
+        Working on this Now......
+            {}
+            ========='''.format(df_twitter[df_twitter.index == i]))
     wb.open(df_twitter.ix[i, 2],new = 0)
     time.sleep(10)
     r = requests.head(df_twitter.ix[i, 2])
@@ -154,7 +162,7 @@ for i in range(1, rows_df_twitter):
     img3.save('{}.png'.format(i))
 
     # 写入 Word 文档
-    headline = Twitter 账号: df_twitter.ix[i, 1]
+    headline = 'Twitter 账号: ', df_twitter.ix[i, 1]
     p = document.add_heading('{}'.format(headline), level = 1)
     document.add_picture('{}.png'.format(i))
     document.save('report.docx')
