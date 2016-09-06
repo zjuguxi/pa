@@ -9,12 +9,10 @@ A automatical screenshot-assistan for Rhea.
 
 ## Change Log
 
-- Version 0.2 
-> 					2016-9-5
-> 					Fixed Twitter-Screenshot part.
-> 				   Added the text user interface.
-- Version 0.1 
-> 					2016-9-2
-> 					The First Release.
+- Version 0.2 2016-9-5
+					Fixed Twitter-Screenshot part.
+				   Added the text user interface.
+- Version 0.1 2016-9-2
+					The First Release.
 
 
