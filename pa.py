@@ -17,6 +17,8 @@ import validators
 # 得到当前path
 cwd = os.getcwd()
 
+progress_bar = 0 # 全局变量 progress_bar
+
 # 打开 Excel 文档的 Pickup 汇总表，读取链接
 xls = pd.ExcelFile('1.xls')
 df_pickup = pd.read_excel(xls, 'Pickup', header = None, index_col = None, na_value = None)
@@ -101,6 +103,8 @@ slide = prs.slides.add_slide(blank_slide_layout)
 
 
 for i in range(1, rows_df):
+    progress_bar global
+    progress_bar += 1
     print('''=========
         Working on this Now...............
             {}
@@ -145,6 +149,8 @@ for i in range(1, rows_df):
     slide = prs.slides.add_slide(blank_slide_layout)
 
 for i in range(1, rows_df_twitter):
+    progress_bar global
+    progress_bar += 1
     print('''=========
         Working on this Now......
             {}
