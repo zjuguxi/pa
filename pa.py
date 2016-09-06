@@ -13,11 +13,8 @@ from pptx.util import Inches, Pt
 import selenium
 from selenium import  webdriver
 import validators
-
-# 得到当前path
-cwd = os.getcwd()
-
-progress_bar = 0 # 全局变量 progress_bar
+from tqdm import tqdm
+from time import sleep
 
 # 打开 Excel 文档的 Pickup 汇总表，读取链接
 xls = pd.ExcelFile('1.xls')
@@ -103,12 +100,13 @@ slide = prs.slides.add_slide(blank_slide_layout)
 
 
 for i in range(1, rows_df):
-    progress_bar global
-    progress_bar += 1
-    print('''=========
-        Working on this Now...............
-            {}
-            ========='''.format(df[df.index == i]))
+    pbar_df = tqdm(range(rows_df))
+    for x in pbar_df:
+        pbar_df.set_description('Processing %s' % x)
+#    print('''=========
+#       Working on this Now...............
+#            {}
+#            ========='''.format(df[df.index == i]))
     wb.open(df.ix[i, 5],new = 0)
     time.sleep(10)
     r = requests.head(df.ix[i, 5])
@@ -139,7 +137,6 @@ for i in range(1, rows_df):
     p.font.bold = True
     p.font.size = Pt(30)
 
-
     # 插入截图
     top = Inches(2.5)
     left = Inches(1.5)
@@ -149,12 +146,11 @@ for i in range(1, rows_df):
     slide = prs.slides.add_slide(blank_slide_layout)
 
 for i in range(1, rows_df_twitter):
-    progress_bar global
-    progress_bar += 1
-    print('''=========
-        Working on this Now......
-            {}
-            ========='''.format(df_twitter[df_twitter.index == i]))
+
+#    print('''=========
+#       Working on this Now......
+#           {}
+#            ========='''.format(df_twitter[df_twitter.index == i]))
     wb.open(df_twitter.ix[i, 2],new = 0)
     time.sleep(10)
     r = requests.head(df_twitter.ix[i, 2])
