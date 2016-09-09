@@ -8,3 +8,4 @@ pyscreenshot
 python-docx
 python-pptx
 validators
+tqdm

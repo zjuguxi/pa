@@ -13,7 +13,7 @@ from pptx.util import Inches, Pt
 import selenium
 from selenium import  webdriver
 import validators
-from tqdm import tqdm
+from tqdm import tqdm, trange
 from time import sleep
 
 # 打开 Excel 文档的 Pickup 汇总表，读取链接
@@ -99,10 +99,8 @@ blank_slide_layout = prs.slide_layouts[0]
 slide = prs.slides.add_slide(blank_slide_layout)
 
 
-for i in range(1, rows_df):
-    pbar_df = tqdm(range(rows_df))
-    for x in pbar_df:
-        pbar_df.set_description('Processing %s' % x)
+for i in trange(1, rows_df):
+
 #    print('''=========
 #       Working on this Now...............
 #            {}
@@ -144,8 +142,9 @@ for i in range(1, rows_df):
     pic = slide.shapes.add_picture('{}.png'.format(i), left, top, height=height)
     prs.save('report.pptx')
     slide = prs.slides.add_slide(blank_slide_layout)
+    tqdm.write('Done link {}'.format(i))
 
-for i in range(1, rows_df_twitter):
+for i in trange(1, rows_df_twitter):
 
 #    print('''=========
 #       Working on this Now......
@@ -189,6 +188,7 @@ for i in range(1, rows_df_twitter):
     pic = slide.shapes.add_picture('{}.png'.format(i), left, top, height=height)
     prs.save('report.pptx')
     slide = prs.slides.add_slide(blank_slide_layout)
+    tqdm.write('Done tweet {}'.format(i))
 
 if bad_list != []:
     print('''These links are inaccessible: ''', bad_list, ''' Please check them again.
